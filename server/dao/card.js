@@ -44,7 +44,7 @@ module.exports = {
     },
 
     getRandomSentence : async () => {
-        const idx = 1; //여기 랜덤으로 하기
+        const idx = Math.floor(Math.random() * 61);
 
         const query = `SELECT random_text_content FROM random_text WHERE random_text_idx = ${idx}`;
 
@@ -57,14 +57,22 @@ module.exports = {
         }
     },
 
-    addAchieveCount : async (user_idx, mission_name) => {
+    addAchieveCount : async (user_idx, mission_name, mission_period) => {
         //+1 이렇게 하면 되는건지 확인
         const query = `UPDATE card
                        SET mission_acheive_count = mission_acheive_count+1
                        WHERE user_idx = ${user_idx} AND now_flag = true AND mission_name = ${mission_name}`;
 
+        //+1한 count랑 period랑 동일하면 다른 모션 띄워줘야됨
+        
+
+        //카드 문구에 뜰 부분
+        const idx = Math.floor(Math.random() * 30);
+        const query2 = `SELECT random_cheerup_text_content FROM random_cheerup_text WHERE random_cheerup_text_idx = ${idx}`;
+
         try {
-            const result = await pool.queryParam(query);
+            await pool.queryParam(query);
+            const result = await pool.queryParam(query2);
             return result;
         } catch (err) {
             console.log('addAchieveCount ERROR : ', err);

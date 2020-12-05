@@ -52,7 +52,7 @@ module.exports = {
         }
 
         //정보 제대로 잘 들어오면 DB 접근
-        const getAllCards = await CardDao.getAllCards();
+        const getAllCards = await CardDao.getAllCards(user_idx);
         if (getAllCards === -1) {
             return res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
         }
@@ -76,22 +76,22 @@ module.exports = {
 
     addAchieveCount: async (req, res) => {
         //user_idx, 카드 정보 받아와야
-        const { user_idx, mission_name } = req.body;
+        const { user_idx, mission_name, mission_period } = req.body;
 
         //하나라도 안 들어오면 404
-        if (!user_idx || !mission_name) {
+        if (!user_idx || !mission_name || !mission_period) {
             res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
             return;
         }
 
         //정보 제대로 잘 들어오면 DB 접근
-        const addAchieveCount = await CardDao.addAchieveCount();
+        const addAchieveCount = await CardDao.addAchieveCount(user_idx, mission_name, mission_period);
         if (addAchieveCount === -1) {
             return res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
         }
 
-        //올바른 응답
-        res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.ADD_COUNT));
+        //올바른 응답 - 카드 +1 누르면 나오는 응원 문구
+        res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.ADD_COUNT), addAchieveCount);
     },
 
     giveupMission: async (req, res) => {
@@ -105,7 +105,7 @@ module.exports = {
         }
 
         //정보 제대로 잘 들어오면 DB 접근
-        const giveupMission = await CardDao.giveupMission();
+        const giveupMission = await CardDao.giveupMission(user_idx, mission_name);
         if (giveupMission === -1) {
             return res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
         }
@@ -125,7 +125,7 @@ module.exports = {
         }
 
         //정보 제대로 잘 들어오면 DB 접근
-        const getAllPastCards = await CardDao.getAllPastCards();
+        const getAllPastCards = await CardDao.getAllPastCards(user_idx);
         if (getAllPastCards === -1) {
             return res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
         }
