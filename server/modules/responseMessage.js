@@ -29,6 +29,7 @@ module.exports = {
     ADD_COUNT: "카운트 증가 성공",
     GIVEUP_MISSION: "카드 삭제 성공",
     GET_ALL_PAST_CARDS: "과거 진행했던 카드 목록 출력 성공",
+    MISSION_FAIL:"미션 실패",
 
     //DB
     DB_ERROR: "DB 오류",
