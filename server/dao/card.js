@@ -156,7 +156,7 @@ module.exports = {
 
     getAllPastCards : async (user_idx) => {
 
-        const query = `SELECT * FROM card WHERE user_idx = ${user_idx} AND now_flag = false`;
+        const query = `SELECT * FROM card WHERE user_idx = ${user_idx} AND now_flag = 0`;
 
         try {
             const result = await pool.queryParam(query);

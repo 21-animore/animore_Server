@@ -20,11 +20,11 @@ module.exports = {
         //정보 제대로 잘 들어오면 DB 접근
         const createCard = await CardDao.createCard(user_idx, mission_name, mission_category, mission_period, mission_start_date, mission_end_date, mission_content, continue_flag);
         if (createCard === -1) {
-            return res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR), createCard);
+            return res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
         }
 
         //올바른 응답
-        res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.CREATED_CARD));
+        res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.CREATED_CARD, createCard));
     },
 
     showRandomCard: async (req, res) => {
