@@ -17,6 +17,12 @@ router.get('/showrandomcard/:card_category_flag', cardController.showRandomCard)
 //메인 화면 전체 카드 정보 받기(완)
 router.get('/getallcards/:user_idx', cardController.getAllCards);
 
+//메인 화면 연속 카드 정보만 받기(완)
+router.get('/getcontinuouscards/:user_idx', cardController.getContinuousCards);
+
+//메인 화면 일반 카드 정보만 받기(완)
+router.get('/getnormalcards/:user_idx', cardController.getNormalCards);
+
 //메인 화면 랜덤 문장 출력(완)
 router.get('/getrandomsentence', cardController.getRandomSentence);
 

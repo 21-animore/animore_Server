@@ -75,6 +75,32 @@ module.exports = {
         }
     },
 
+    getContinuousCards : async (user_idx) => {
+
+        const query = `SELECT * FROM card WHERE user_idx = ${user_idx} AND now_flag = 1 AND continue_flag = 1`;
+
+        try {
+            const result = await pool.queryParam(query);
+            return result;
+        } catch (err) {
+            console.log('getContinuousCards ERROR : ', err);
+            throw err;
+        }
+    },
+
+    getNormalCards : async (user_idx) => {
+
+        const query = `SELECT * FROM card WHERE user_idx = ${user_idx} AND now_flag = 1 AND continue_flag = 0`;
+
+        try {
+            const result = await pool.queryParam(query);
+            return result;
+        } catch (err) {
+            console.log('getNormalCards ERROR : ', err);
+            throw err;
+        }
+    },
+
     getRandomSentence : async () => {
         const idx = Math.floor(Math.random() * 60);
         console.log(1+idx);

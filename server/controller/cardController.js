@@ -72,6 +72,46 @@ module.exports = {
         res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SHOW_ALL_CARD, getAllCards));
     },
 
+    getContinuousCards: async (req, res) => {
+        //user_idx 받아와야
+        const { user_idx } = req.params;
+
+        //하나라도 안 들어오면 400
+        if (!user_idx) {
+            res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
+            return;
+        }
+
+        //정보 제대로 잘 들어오면 DB 접근
+        const getContinuousCards = await CardDao.getContinuousCards(user_idx);
+        if (getContinuousCards === -1) {
+            return res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
+        }
+
+        //올바른 응답
+        res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SHOW_ALL_CARD, getContinuousCards));
+    },
+
+    getNormalCards: async (req, res) => {
+        //user_idx 받아와야
+        const { user_idx } = req.params;
+
+        //하나라도 안 들어오면 400
+        if (!user_idx) {
+            res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
+            return;
+        }
+
+        //정보 제대로 잘 들어오면 DB 접근
+        const getNormalCards = await CardDao.getNormalCards(user_idx);
+        if (getNormalCards === -1) {
+            return res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
+        }
+
+        //올바른 응답
+        res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.SHOW_ALL_CARD, getNormalCards));
+    },
+
     getRandomSentence: async (req, res) => {
         //받을 정보 없음
 
