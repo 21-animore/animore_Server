@@ -64,7 +64,7 @@ module.exports = {
 
     getAllCards : async (user_idx) => {
 
-        const query = `SELECT * FROM card WHERE user_idx = ${user_idx} AND now_flag = true`;
+        const query = `SELECT * FROM card WHERE user_idx = ${user_idx} AND now_flag = 1`;
 
         try {
             const result = await pool.queryParam(query);
@@ -93,13 +93,14 @@ module.exports = {
         //먼저 count 받아오기
         const query1 = `SELECT mission_acheive_count FROM card
                         WHERE user_idx = ${user_idx} AND now_flag = 1 AND mission_name = "${mission_name}"`
+                        
 
         try {
             const result1 = await pool.queryParam(query1);
             const afterAddResult = result1[0]["mission_acheive_count"] +1;
 
-            if(afterAddResult === mission_period){
-                 //+1한 count랑 period랑 동일하면 과거로 옮겨야됨
+            if(afterAddResult == mission_period){
+                //+1한 count랑 period랑 동일하면 과거로 옮겨야됨
                 const query2 = `UPDATE card
                                SET mission_acheive_count = ${afterAddResult}, success_flag = 1, now_flag = 0
                                WHERE user_idx = ${user_idx} AND now_flag = 1 AND mission_name = "${mission_name}"`;
@@ -116,7 +117,9 @@ module.exports = {
             const idx = Math.floor(Math.random() * 29);
             const query4 = `SELECT random_success_text_content FROM random_success_text WHERE random_success_text_idx = ${idx}`;
             const result4 = await pool.queryParam(query4);
+            console.log(result4[0]["random_success_text_content"]);
             return result4[0]["random_success_text_content"];
+            
 
         } catch (err) {
             console.log('addAchieveCount ERROR : ', err);
