@@ -43,6 +43,9 @@ router.put('/missionfail', cardController.missionFail);
 //지난 카드 전체 확인(완)
 router.get('/getallpastcards/:user_idx', cardController.getAllPastCards);
 
+//지난 성공 카드 수 확인(완)
+router.get('/getallpastcards/count/:user_idx', cardController.getAllSucessPastCardsCount);
+
 
 
 module.exports = router;

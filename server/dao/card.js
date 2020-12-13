@@ -115,7 +115,7 @@ module.exports = {
         }
     },
 
-    addAchieveCount : async (user_idx, mission_name, mission_period) => {
+    addAchieveCount : async (user_idx, mission_name, mission_period, click_date) => {
         //먼저 count 받아오기
         const query1 = `SELECT mission_acheive_count FROM card
                         WHERE user_idx = ${user_idx} AND now_flag = 1 AND mission_name = "${mission_name}"`
@@ -128,13 +128,13 @@ module.exports = {
             if(afterAddResult == mission_period){
                 //+1한 count랑 period랑 동일하면 과거로 옮겨야됨
                 const query2 = `UPDATE card
-                               SET mission_acheive_count = ${afterAddResult}, success_flag = 1, now_flag = 0
+                               SET mission_acheive_count = ${afterAddResult}, success_flag = 1, now_flag = 0, click_date = "${click_date}"
                                WHERE user_idx = ${user_idx} AND now_flag = 1 AND mission_name = "${mission_name}"`;
                 await pool.queryParam(query2);
             }else{
                 //+1
                 const query3 = `UPDATE card
-                               SET mission_acheive_count = ${afterAddResult}
+                               SET mission_acheive_count = ${afterAddResult}, click_date = "${click_date}"
                                WHERE user_idx = ${user_idx} AND now_flag = 1 AND mission_name = "${mission_name}"`;
                 await pool.queryParam(query3);
             }
@@ -187,6 +187,19 @@ module.exports = {
         try {
             const result = await pool.queryParam(query);
             return result;
+        } catch (err) {
+            console.log('getAllPastCards ERROR : ', err);
+            throw err;
+        }
+    },
+
+    getAllSucessPastCardsCount : async (user_idx) => {
+
+        const query = `SELECT COUNT(*) FROM card WHERE user_idx = ${user_idx} AND now_flag = 0 AND success_flag = 1`;
+
+        try {
+            const result = await pool.queryParam(query);
+            return result[0]["COUNT(*)"];
         } catch (err) {
             console.log('getAllPastCards ERROR : ', err);
             throw err;

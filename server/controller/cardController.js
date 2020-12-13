@@ -203,5 +203,25 @@ module.exports = {
 
         //올바른 응답
         res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.GET_ALL_PAST_CARDS, getAllPastCards));
+    },
+
+    getAllSucessPastCardsCount: async (req, res) => {
+        //user_idx 받아와야
+        const { user_idx } = req.params;
+
+        //하나라도 안 들어오면 404
+        if (!user_idx) {
+            res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
+            return;
+        }
+
+        //정보 제대로 잘 들어오면 DB 접근
+        const getAllSucessPastCardsCount = await CardDao.getAllSucessPastCardsCount(user_idx);
+        if (getAllSucessPastCardsCount === -1) {
+            return res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
+        }
+
+        //올바른 응답
+        res.status(statusCode.OK).send(util.success(statusCode.OK, resMessage.GET_ALL_PAST_CARDS, getAllSucessPastCardsCount));
     }
 }
