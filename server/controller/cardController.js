@@ -127,16 +127,16 @@ module.exports = {
 
     addAchieveCount: async (req, res) => {
         //user_idx, 카드 정보 받아와야
-        const { user_idx, mission_name, mission_period } = req.body;
+        const { user_idx, mission_name, mission_period, click_date } = req.body;
 
         //하나라도 안 들어오면 404
-        if (!user_idx || !mission_name || !mission_period) {
+        if (!user_idx || !mission_name || !mission_period || !click_date) {
             res.status(statusCode.BAD_REQUEST).send(util.fail(statusCode.BAD_REQUEST, resMessage.NULL_VALUE));
             return;
         }
 
         //정보 제대로 잘 들어오면 DB 접근
-        const addAchieveCount = await CardDao.addAchieveCount(user_idx, mission_name, mission_period);
+        const addAchieveCount = await CardDao.addAchieveCount(user_idx, mission_name, mission_period, click_date);
         if (addAchieveCount === -1) {
             return res.status(statusCode.DB_ERROR).send(util.fail(statusCode.DB_ERROR, resMessage.DB_ERROR));
         }
